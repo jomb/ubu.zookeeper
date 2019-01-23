@@ -1,0 +1,4 @@
+[zoo]
+zoo-test-01 zk_id=1 zk_ip=10.0.0.130
+zoo-test-02 zk_id=2 zk_ip=10.0.0.131
+zoo-test-03 zk_id=3 zk_ip=10.0.0.132

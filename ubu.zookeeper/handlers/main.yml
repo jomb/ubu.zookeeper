@@ -1,0 +1,6 @@
+---
+# handlers file for zookeeper
+ - name: Restart zookeeper
+   systemd:
+     name: zoo
+     state: restarted

@@ -1,0 +1,55 @@
+---
+# Preparation
+#
+# 
+
+# For testlab I'm goint disable firewalld and Sellinux
+#
+
+
+ - name:  Add zookeeper group
+   group:
+     name: "zookeeper" 
+     state: present
+
+ - name: Add zookeeper user
+   user:
+     name: "zookeeper"
+     group: "zookeeper"
+     home: /bin/false
+     state: present
+
+# Create all nessessary directories: 
+ - name: Create folders
+   file:
+     path: "{{ item }}"
+     state: directory
+     owner: "zookeeper"
+     group: "zookeeper"
+   with_items:
+     - "{{ zookeeper_install_path }}"
+     - "{{ zookeeper_conf_dir }}"
+     - "{{ zookeeper_data_dir }}"
+     - "{{ zookeeper_log_dir }}"
+
+
+ - name: Download and untar
+   unarchive:
+     extra_opts: ['--strip-components=1']
+     src: "{{ zookeeper_final_url }}"
+     remote_src: true
+     dest: "{{ zookeeper_install_path }}"
+     owner: "zookeeper"
+     group: "zookeeper"
+
+ - name: Deploy service
+   template:
+     src: zoo.service.j2
+     dest: /etc/systemd/system/zoo.service
+
+#Enable service zoo
+ - name: Enable service zoo
+   systemd:
+    name: zoo
+    enabled: yes
+    masked: no

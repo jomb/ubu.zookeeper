@@ -1,0 +1,14 @@
+tickTime={{ zoo_tickTime }}
+initLimit={{ zoo_initLimit }}
+syncLimit={{ zoo_syncLimit }}
+dataDir={{ zookeeper_data_dir }}
+dataLogDir={{ zookeeper_log_dir }}
+clientPort={{ zoo_clientPort }}
+maxClientCnxns={{ zoo_maxClientCnxns }}
+autopurge.snapRetainCount={{ zoo_autopurge_snapRetainCount }}
+autopurge.purgeInterval={{ zoo_autopurge_purgeInterval }}
+admin.enableServer={{ http_server }}
+{% for host in groups['zoo'] %}
+server.{{hostvars[host]['zk_id']}}={{hostvars[host]['zk_ip']}}:2888:3888
+{% endfor %}
+

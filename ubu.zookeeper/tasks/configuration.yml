@@ -1,0 +1,30 @@
+---
+# Preparation
+#
+
+ - name: Deploy config file
+   template:
+     src: zoo.cfg.j2
+     dest: "{{ zookeeper_conf_dir }}/zoo.cfg"
+     owner: "zookeeper"
+     group: "zookeeper"
+   notify:
+     - Restart zookeeper
+
+ - name: Deploy myid file.
+   template:
+     src: myid.j2
+     dest: "{{ zookeeper_data_dir }}/myid"
+     owner: "zookeeper"
+     group: "zookeeper"
+   notify:
+    - Restart zookeeper
+ 
+ - name: Deploy log4j file
+   template:
+     src: log4j.properties.j2
+     dest: "{{ zookeeper_conf_dir }}/log4j.properties"
+     owner: "zookeeper"
+     group: "zookeeper"
+   notify:
+     - Restart zookeeper

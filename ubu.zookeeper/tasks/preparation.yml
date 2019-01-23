@@ -1,0 +1,53 @@
+---
+# Preparation
+#
+# 
+
+# For testlab I'm goint disable firewalld and Sellinux
+ - name: Disable firewalld
+   ufw:
+     state: disabled
+
+ - name: Disable IPv6
+   sysctl:
+     name: "{{ item }}"
+     value: 1
+     sysctl_set: yes
+     state: present
+     reload: yes
+   with_items:
+     - net.ipv6.conf.all.disable_ipv6
+     - net.ipv6.conf.default.disable_ipv6
+     - net.ipv6.conf.lo.disable_ipv6
+
+#Disable swap to avoid zookeeper swapping (heap shoule be normally configured
+ - name: Remove swapfile from /etc/fstab
+   mount:
+     name: swap
+     fstype: swap
+     state: absent
+ - name: Disable swap
+   command: swapoff -a
+
+
+# Dirty hack, can be improoved
+ - name: Install some libraries for ansible apt compatibility 
+   command: apt-get -y install python-apt aptitude
+
+#Add OpenJDK reposity 
+ - name: Add OpenJDK reposity 
+   apt_repository:
+    repo: ppa:openjdk-r/ppa
+
+# Install updates and nessessary packages: 
+ - name: Install nessessary packages
+   apt:
+     pkg: ['unzip', 'openjdk-8-jdk']
+
+ - name: Install latest updates
+   apt:
+     pkg: "*"
+     state: latest
+     update_cache: yes
+
+#### Maybe need to add hosts files with server mapping

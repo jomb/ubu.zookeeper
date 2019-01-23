@@ -1,0 +1,20 @@
+[Unit]
+Description=Zookeeper Daemon
+Wants=syslog.target
+
+[Service]
+Type=forking
+WorkingDirectory={{ zookeeper_data_dir }}
+User=zookeeper
+ExecStart=/opt/zookeeper/bin/zkServer.sh start
+ExecStop=/opt/zookeeper/bin/zkServer.sh stop
+ExecReload=/opt/zookeeper/bin/zkServer.sh restart
+TimeoutSec=30
+Restart=on-failure
+Environment="ZOO_LOG_DIR={{ zookeeper_log_dir }}"
+Environment="ZOO_LOG4J_PROP=INFO,ROLLINGFILE"
+
+
+[Install]
+WantedBy=multi-user.target
+
