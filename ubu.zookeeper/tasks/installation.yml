@@ -32,8 +32,16 @@
      - "{{ zookeeper_data_dir }}"
      - "{{ zookeeper_log_dir }}"
 
+ - name: Check if zookeeper already installed
+   stat:
+    path: "{{ zookeeper_install_path }}/{{ zookeeper_version }}.jar"
+    #path: "/opt/zookeeper/zookeeper-3.5.4-beta.jar"
+   register: zookeeper_jar
+
+
 
  - name: Download and untar
+   when: not zookeeper_jar.stat.exists
    unarchive:
      extra_opts: ['--strip-components=1']
      src: "{{ zookeeper_final_url }}"

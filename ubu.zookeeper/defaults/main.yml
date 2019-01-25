@@ -1,2 +1,29 @@
 ---
-# defaults file for zookeeper
+# vars file for zookeeper
+
+#Zookeeper source
+zookeeper_url: https://www-us.apache.org/dist/zookeeper/
+zookeeper_version: zookeeper-3.5.4-beta
+
+###
+zookeeper_final_url: "{{ zookeeper_url }}{{ zookeeper_version }}/{{ zookeeper_version }}.tar.gz"
+
+
+#Define zookeeper directories
+zookeeper_data_dir: /usr/local/zookeeper
+zookeeper_log_dir: /var/log/zookeeper
+zookeeper_install_path: /opt/zookeeper
+zookeeper_conf_dir: "{{ zookeeper_install_path }}/conf"
+
+#Define if admin server is running
+http_server: "false" 
+
+#Define main configuration 
+zoo_tickTime: 2000
+zoo_initLimit: 10
+zoo_syncLimit: 5
+zoo_clientPort: 2181
+zoo_maxClientCnxns: 60
+zoo_autopurge_snapRetainCount: 3
+zoo_autopurge_purgeInterval: 1
+

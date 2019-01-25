@@ -22,17 +22,19 @@
 
 #Disable swap to avoid zookeeper swapping (heap shoule be normally configured
  - name: Remove swapfile from /etc/fstab
+   when: not ansible_memory_mb.swap.free == 0
    mount:
      name: swap
      fstype: swap
      state: absent
  - name: Disable swap
+   when: not ansible_memory_mb.swap.free == 0
    command: swapoff -a
 
 
 # Dirty hack, can be improoved
  - name: Install some libraries for ansible apt compatibility 
-   command: apt-get -y install python-apt aptitude
+   command: apt-get -y install python-apt aptitude warn=no
 
 #Add OpenJDK reposity 
  - name: Add OpenJDK reposity 
